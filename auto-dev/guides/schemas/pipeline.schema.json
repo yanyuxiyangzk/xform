@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Pipeline Schema",
+  "description": "自动化开发流水线定义",
+  "type": "object",
+  "required": ["id", "stages", "requirement", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^PIPELINE-\\d{8}-\\d{3}$",
+      "description": "流水线ID，格式: PIPELINE-YYYYMMDD-NNN"
+    },
+    "requirement": {
+      "type": "string",
+      "minLength": 1,
+      "description": "需求描述"
+    },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["requirement", "design", "development", "testing", "deployment"]
+      },
+      "description": "流水线阶段序列"
+    },
+    "current_stage": {
+      "type": "string",
+      "enum": ["requirement", "design", "development", "testing", "deployment", "completed", "failed"],
+      "description": "当前阶段"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "running", "completed", "failed", "blocked"],
+      "description": "流水线状态"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "创建时间"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "开始时间"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "完成时间"
+    },
+    "quality_gate": {
+      "type": "object",
+      "properties": {
+        "passed": {"type": "boolean"},
+        "duration": {"type": "number"},
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "result": {"type": "string", "enum": ["PASS", "FAIL", "WARN", "SKIP"]},
+              "duration": {"type": "number"}
+            }
+          }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "iterations": {"type": "integer"},
+        "approved": {"type": "boolean"},
+        "issues": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

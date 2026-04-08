@@ -1,0 +1,42 @@
+{
+  "id": "PIPELINE-20260405-013",
+  "requirement": "在线表单设计器",
+  "current_stage": "testing",
+  "stages": {
+    "requirement": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:15:39.649032",
+      "end_time": "2026-04-05T10:15:39.660429",
+      "output": "Requirement stage auto-completed (document exists)"
+    },
+    "design": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:15:39.673643",
+      "end_time": "2026-04-05T10:15:39.683702",
+      "output": "Design stage completed, team prepared: team-PIPELINE-20260405-013"
+    },
+    "development": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:15:39.695313",
+      "end_time": "2026-04-05T10:15:40.281611",
+      "output": "Development team launched for: 需求文档"
+    },
+    "testing": {
+      "status": "failed",
+      "start_time": "2026-04-05T10:16:20.373883",
+      "end_time": "2026-04-05T10:17:39.147526",
+      "output": "",
+      "error": "Quality gate failed"
+    },
+    "deployment": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    }
+  },
+  "created_at": "2026-04-05T10:15:38.806513",
+  "team": null,
+  "violations": [],
+  "test_results": null
+}

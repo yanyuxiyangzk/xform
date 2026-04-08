@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Agent Schema",
+  "description": "Agent 定义",
+  "type": "object",
+  "required": ["name", "role"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Agent 实例名称"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["orchestrator", "backend-dev", "frontend-dev", "tester", "devops", "architect", "ui-designer", "reviewer", "product-manager"],
+      "description": "Agent 角色"
+    },
+    "team": {
+      "type": "string",
+      "description": "所属团队"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["idle", "running", "completed", "failed", "stopped"],
+      "description": "状态"
+    },
+    "pid": {
+      "type": "integer",
+      "description": "进程ID"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tasks": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "分配的任务ID列表"
+    },
+    "config": {
+      "type": "object",
+      "description": "Agent 配置",
+      "properties": {
+        "model": {"type": "string"},
+        "temperature": {"type": "number"},
+        "max_tokens": {"type": "integer"}
+      }
+    }
+  }
+}

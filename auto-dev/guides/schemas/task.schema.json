@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Task Schema",
+  "description": "任务定义",
+  "type": "object",
+  "required": ["id", "title", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^TASK-\\d{8}-\\d{3}$",
+      "description": "任务ID"
+    },
+    "title": {
+      "type": "string",
+      "description": "任务标题"
+    },
+    "description": {
+      "type": "string",
+      "description": "任务描述"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "in_progress", "completed", "failed", "blocked"],
+      "description": "任务状态"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["P0", "P1", "P2", "P3"],
+      "description": "优先级 P0最高"
+    },
+    "assignee": {
+      "type": "string",
+      "description": "负责人"
+    },
+    "pipeline_id": {
+      "type": "string",
+      "description": "所属流水线"
+    },
+    "stage": {
+      "type": "string",
+      "enum": ["requirement", "design", "development", "testing", "deployment"],
+      "description": "所属阶段"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "estimated_hours": {
+      "type": "number",
+      "description": "预估小时"
+    },
+    "actual_hours": {
+      "type": "number",
+      "description": "实际小时"
+    },
+    "blockers": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "阻塞任务ID列表"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "依赖任务ID列表"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "产出物路径列表"
+    }
+  }
+}

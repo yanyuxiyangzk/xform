@@ -1,0 +1,33 @@
+# Auto-Dev 配置文件
+# 零代码平台项目配置
+
+compile:
+  # Maven 多模块子模块目录
+  maven_module: ruoyi-nocode
+  # 编译超时时间（秒）
+  timeout: 300
+  # 编译命令
+  command: mvn compile
+
+test:
+  # Maven 多模块子模块目录
+  maven_module: ruoyi-nocode
+  # 测试超时时间（秒）
+  timeout: 600
+  # 最低通过率
+  min_pass_rate: 0.9
+
+security:
+  # 安全扫描工具
+  tools:
+    - name: dependency-analyze
+      command: mvn dependency:analyze
+      on_fail: warn
+    - name: spotbugs
+      command: mvn spotbugs:check
+      on_fail: warn
+
+code_style:
+  # 代码风格检查
+  check_command: mvn checkstyle:check
+  block_on_fail: false

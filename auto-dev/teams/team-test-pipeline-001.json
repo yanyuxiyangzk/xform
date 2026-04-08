@@ -1,0 +1,20 @@
+{
+  "name": "team-test-pipeline-001",
+  "pipeline_id": "test-pipeline-001",
+  "created_at": "2026-04-07T19:57:23.594451",
+  "status": "active",
+  "members": [
+    {
+      "role": "backend-dev",
+      "status": "idle"
+    },
+    {
+      "role": "frontend-dev",
+      "status": "idle"
+    },
+    {
+      "role": "tester",
+      "status": "idle"
+    }
+  ]
+}

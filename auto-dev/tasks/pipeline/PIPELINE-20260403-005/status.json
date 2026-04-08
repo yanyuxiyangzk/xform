@@ -1,0 +1,41 @@
+{
+  "id": "PIPELINE-20260403-005",
+  "requirement": "零代码平台自动建表功能 - 表单JSON自动生成DDL并创建数据表，实现完整闭环",
+  "current_stage": "requirement",
+  "stages": {
+    "requirement": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    },
+    "design": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    },
+    "development": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    },
+    "testing": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    },
+    "deployment": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    }
+  },
+  "created_at": "2026-04-03T19:18:34.898646",
+  "team": null,
+  "violations": [],
+  "test_results": null
+}

@@ -1,0 +1,41 @@
+{
+  "id": "PIPELINE-20260407-020",
+  "requirement": "测试多角色协作",
+  "current_stage": "testing",
+  "stages": {
+    "requirement": {
+      "status": "completed",
+      "start_time": "2026-04-07T19:55:28.876771",
+      "end_time": "2026-04-07T19:55:28.885538",
+      "output": "Requirement stage auto-completed (document exists)"
+    },
+    "design": {
+      "status": "completed",
+      "start_time": "2026-04-07T19:55:28.894085",
+      "end_time": "2026-04-07T19:55:28.903649",
+      "output": "Design stage completed, team prepared: team-PIPELINE-20260407-020"
+    },
+    "development": {
+      "status": "completed",
+      "start_time": "2026-04-07T19:55:28.914603",
+      "end_time": "2026-04-07T19:55:29.596667",
+      "output": "Full team launched for: 需求文档"
+    },
+    "testing": {
+      "status": "in_progress",
+      "start_time": "2026-04-07T19:56:23.253066",
+      "end_time": null,
+      "output": ""
+    },
+    "deployment": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    }
+  },
+  "created_at": "2026-04-07T19:55:27.663965",
+  "team": null,
+  "violations": [],
+  "test_results": null
+}

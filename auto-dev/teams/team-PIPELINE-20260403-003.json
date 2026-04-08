@@ -1,0 +1,20 @@
+{
+  "name": "team-PIPELINE-20260403-003",
+  "pipeline_id": "PIPELINE-20260403-003",
+  "created_at": "2026-04-03T15:15:37.966760",
+  "status": "active",
+  "members": [
+    {
+      "role": "backend-dev",
+      "status": "idle"
+    },
+    {
+      "role": "frontend-dev",
+      "status": "idle"
+    },
+    {
+      "role": "tester",
+      "status": "idle"
+    }
+  ]
+}

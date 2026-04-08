@@ -1,0 +1,41 @@
+{
+  "id": "PIPELINE-20260405-016",
+  "requirement": "测试",
+  "current_stage": "deployment",
+  "stages": {
+    "requirement": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:23:54.278981",
+      "end_time": "2026-04-05T10:23:54.300891",
+      "output": "Requirement stage auto-completed (document exists)"
+    },
+    "design": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:23:54.321221",
+      "end_time": "2026-04-05T10:23:54.343018",
+      "output": "Design stage completed, team prepared: team-PIPELINE-20260405-016"
+    },
+    "development": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:23:54.368836",
+      "end_time": "2026-04-05T10:23:55.859048",
+      "output": "Development team launched for: 需求文档"
+    },
+    "testing": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:24:52.431239",
+      "end_time": "2026-04-05T10:26:20.429643",
+      "output": "Quality gate passed"
+    },
+    "deployment": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:27:29.482762",
+      "end_time": "2026-04-05T10:27:29.494080",
+      "output": "Deployment stage completed"
+    }
+  },
+  "created_at": "2026-04-05T10:23:52.777850",
+  "team": null,
+  "violations": [],
+  "test_results": null
+}

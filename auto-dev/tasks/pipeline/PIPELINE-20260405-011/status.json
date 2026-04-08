@@ -1,0 +1,41 @@
+{
+  "id": "PIPELINE-20260405-011",
+  "requirement": "在线表单设计器 - 零代码平台前端组件，复刻vform3-pro，功能完整但代码重复率<30%",
+  "current_stage": "deployment",
+  "stages": {
+    "requirement": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:03:55.649688",
+      "end_time": "2026-04-05T10:03:55.658874",
+      "output": "Requirement stage auto-completed (document exists)"
+    },
+    "design": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:03:55.667837",
+      "end_time": "2026-04-05T10:03:55.677561",
+      "output": "Design stage completed, team prepared: team-PIPELINE-20260405-011"
+    },
+    "development": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:03:55.687244",
+      "end_time": "2026-04-05T10:03:55.706046",
+      "output": "Development team ready. Run launch script to start parallel development."
+    },
+    "testing": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:04:20.895553",
+      "end_time": "2026-04-05T10:05:35.225262",
+      "output": "Quality gate passed"
+    },
+    "deployment": {
+      "status": "completed",
+      "start_time": "2026-04-05T10:06:27.047052",
+      "end_time": "2026-04-05T10:06:27.056647",
+      "output": "Deployment stage completed"
+    }
+  },
+  "created_at": "2026-04-05T10:02:01.703292",
+  "team": null,
+  "violations": [],
+  "test_results": null
+}

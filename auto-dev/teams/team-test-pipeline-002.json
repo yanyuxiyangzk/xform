@@ -1,0 +1,40 @@
+{
+  "name": "team-test-pipeline-002",
+  "pipeline_id": "test-pipeline-002",
+  "created_at": "2026-04-07T19:57:55.570382",
+  "status": "active",
+  "members": [
+    {
+      "role": "product-manager",
+      "status": "idle"
+    },
+    {
+      "role": "architect",
+      "status": "idle"
+    },
+    {
+      "role": "backend-dev",
+      "status": "idle"
+    },
+    {
+      "role": "frontend-dev",
+      "status": "idle"
+    },
+    {
+      "role": "ui-designer",
+      "status": "idle"
+    },
+    {
+      "role": "tester",
+      "status": "idle"
+    },
+    {
+      "role": "devops",
+      "status": "idle"
+    },
+    {
+      "role": "reviewer",
+      "status": "idle"
+    }
+  ]
+}

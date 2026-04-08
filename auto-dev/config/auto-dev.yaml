@@ -1,0 +1,176 @@
+# auto-dev 配置文件
+# 零代码微服务平台自动开发系统配置
+
+version: "1.0.0"
+last_updated: "2026-04-03"
+
+---
+
+## 自我改进系统
+
+auto_improve:
+  enabled: true
+  mode: "active"  # passive | active | strict
+
+  # 自动学习
+  auto_learn:
+    enabled: true
+    triggers:
+      - correction      # 用户纠正
+      - preference     # 显式偏好
+      - pattern        # 重复模式
+
+  # 自动反思
+  auto_reflect:
+    enabled: true
+    on_stage_complete: true  # 阶段完成时反思
+    on_developer_feedback: true  # 开发者反馈时反思
+
+  # 自动归档
+  auto_archive:
+    enabled: true
+    check_interval_hours: 24
+    rules:
+      older_than_days: 90
+      min_importance: 5
+      min_access_count: 3
+
+  # 层级提升规则
+  promotion:
+    episodic_to_working:
+      min_access_count: 5
+      min_age_days: 7
+    working_to_longterm:
+      min_importance: 7
+      min_access_count: 10
+    confirmation_threshold: 3  # 3次重复后确认
+
+---
+
+## 流水线配置
+
+pipeline:
+  stages:
+    - requirement  # 需求分析
+    - design       # 技术设计
+    - development  # 开发实现
+    - testing      # 测试验证
+    - deployment   # 上线部署
+
+  # 阶段超时（小时）
+  stage_timeout:
+    requirement: 2
+    design: 4
+    development: 8
+    testing: 4
+    deployment: 2
+
+  # 并行配置
+  parallel:
+    backend_dev: true
+    frontend_dev: true
+
+---
+
+## 心跳配置
+
+heartbeat:
+  enabled: true
+  interval_minutes: 10
+  check_changes: true
+  auto_refresh_index: true
+
+---
+
+## 记忆系统
+
+memory:
+  base_dir: "memory"
+
+  layers:
+    episodic:
+      retention_days: 30
+      path: "episodic"
+    working:
+      retention_days: 30
+      path: "working"
+    longterm:
+      retention_days: -1  # 永久
+      path: "longterm"
+
+  auto_sync:
+    enabled: true
+    sync_interval_hours: 24
+
+---
+
+## 脚本目录
+
+scripts:
+  base_dir: "scripts"
+
+  main_scripts:
+    - memory_ops.py
+    - task_ops.py
+    - pipeline_ops.py
+    - orchestrator_ops.py
+    - knowledge_sync_ops.py
+    - knowledge_refine_ops.py
+    - daily_routine_ops.py
+    - self_improve_ops.py
+
+  hook_scripts:
+    - auto_learn_hook.py
+    - auto_reflect_hook.py
+    - auto_archive_hook.py
+    - auto_heartbeat.py
+
+---
+
+## 项目配置
+
+project:
+  name: "RuoYi-Cloud-Nocode"
+  type: "zero-code microservice platform"
+
+  tech_stack:
+    backend:
+      - Java 17
+      - Spring Boot 3.2.5
+      - Spring Cloud 2023.0.5
+      - PF4J 3.11.1
+      - Liquor 1.6.3
+      - MyBatis-Plus 3.5.7
+      - Sa-Token 1.37.0
+    frontend:
+      - Vue3
+      - TypeScript
+      - Element Plus
+
+  services:
+    gateway: 8080
+    auth: 9200
+    system: 9201
+
+---
+
+## 日志配置
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(message)s"
+
+  files:
+    auto_learn: "self-improving/logs/auto_learn.log"
+    auto_reflect: "self-improving/logs/auto_reflect.log"
+    heartbeat: "self-improving/logs/heartbeat.log"
+
+---
+
+## 性能配置
+
+performance:
+  max_context_lines: 2000
+  skill_load_timeout_sec: 2
+  script_execute_timeout_sec: 5
+  memory_search_timeout_sec: 1

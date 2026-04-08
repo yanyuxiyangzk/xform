@@ -1,0 +1,41 @@
+{
+  "id": "PIPELINE-20260407-021",
+  "requirement": "测试多角色协作需求",
+  "current_stage": "requirement",
+  "stages": {
+    "requirement": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    },
+    "design": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    },
+    "development": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    },
+    "testing": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    },
+    "deployment": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "output": ""
+    }
+  },
+  "created_at": "2026-04-07T19:58:00.311730",
+  "team": null,
+  "violations": [],
+  "test_results": null
+}

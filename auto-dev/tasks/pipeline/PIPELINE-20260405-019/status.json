@@ -1,0 +1,41 @@
+{
+  "id": "PIPELINE-20260405-019",
+  "requirement": "在线表单设计器xform - 复刻vform3-pro核心功能：表单设计器拖拽布局、表单渲染器动态渲染、表单项组件库、属性配置面板、表单数据校验、JSON Schema导入导出、自定义组件扩展，代码相似度<30%",
+  "current_stage": "deployment",
+  "stages": {
+    "requirement": {
+      "status": "completed",
+      "start_time": "2026-04-05T11:19:31.103586",
+      "end_time": "2026-04-05T11:19:31.115655",
+      "output": "Requirement stage auto-completed (document exists)"
+    },
+    "design": {
+      "status": "completed",
+      "start_time": "2026-04-05T11:19:31.126377",
+      "end_time": "2026-04-05T11:19:31.138013",
+      "output": "Design stage completed, team prepared: team-PIPELINE-20260405-019"
+    },
+    "development": {
+      "status": "completed",
+      "start_time": "2026-04-05T11:19:31.148555",
+      "end_time": "2026-04-05T11:19:31.661795",
+      "output": "Development team launched for: 需求文档"
+    },
+    "testing": {
+      "status": "completed",
+      "start_time": "2026-04-05T11:19:57.731275",
+      "end_time": "2026-04-05T11:21:22.140519",
+      "output": "Quality gate passed"
+    },
+    "deployment": {
+      "status": "completed",
+      "start_time": "2026-04-05T11:22:25.522494",
+      "end_time": "2026-04-05T11:22:25.533756",
+      "output": "Deployment stage completed"
+    }
+  },
+  "created_at": "2026-04-05T11:19:30.419982",
+  "team": null,
+  "violations": [],
+  "test_results": null
+}

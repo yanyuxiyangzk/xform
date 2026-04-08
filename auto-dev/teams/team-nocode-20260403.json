@@ -1,0 +1,29 @@
+{
+  "name": "team-nocode-20260403",
+  "pipeline_id": "PIPELINE-20260403-003",
+  "created_at": "2026-04-03T15:14:24.724659",
+  "status": "created",
+  "members": [
+    {
+      "role": "backend-dev",
+      "name": "backend-dev",
+      "description": "后端开发工程师",
+      "status": "idle",
+      "added_at": "2026-04-03T15:14:24.733453"
+    },
+    {
+      "role": "frontend-dev",
+      "name": "frontend-dev",
+      "description": "前端开发工程师",
+      "status": "idle",
+      "added_at": "2026-04-03T15:14:24.740668"
+    },
+    {
+      "role": "tester",
+      "name": "tester",
+      "description": "测试工程师",
+      "status": "idle",
+      "added_at": "2026-04-03T15:14:24.748432"
+    }
+  ]
+}
