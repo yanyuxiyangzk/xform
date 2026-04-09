@@ -1,40 +1,48 @@
 <template>
   <div class="form-widget-wrapper" :class="layoutClass">
-    <div class="form-widget-canvas" v-if="widgetList.length === 0">
+    <div class="form-widget-canvas" v-if="designer.widgetList.length === 0">
       <div class="empty-canvas-hint">
         <span>请从左侧面板拖拽组件到此区域</span>
       </div>
     </div>
 
     <div v-else class="widget-list-container">
-      <template v-for="(widget, index) in widgetList" :key="widget.id">
-        <!-- Container Widget -->
-        <template v-if="widget.category === 'container'">
-          <container-wrapper
-            :widget="widget"
-            :parent-list="widgetList"
-            :index-of-parent-list="index"
-            :parent-widget="null"
-            :designer="designer"
-          />
+      <draggable
+        :list="designer.widgetList"
+        item-key="key"
+        :group="{name: 'dragGroup', pull: true, put: true}"
+        ghost-class="ghost"
+        @end="onDragEnd"
+        @add="onWidgetAdd"
+      >
+        <template #item="{ element, index }">
+          <div class="widget-item-wrapper" v-if="element.category === 'container'">
+            <ContainerWrapper
+              :widget="element"
+              :parent-list="designer.widgetList"
+              :index-of-parent-list="index"
+              :parent-widget="null"
+              :designer="designer"
+            />
+          </div>
+          <div class="widget-item-wrapper" v-else>
+            <FieldWrapper
+              :field="element"
+              :parent-list="designer.widgetList"
+              :index-of-parent-list="index"
+              :parent-widget="null"
+              :designer="designer"
+            />
+          </div>
         </template>
-        <!-- Field Widget -->
-        <template v-else>
-          <field-wrapper
-            :field="widget"
-            :parent-list="widgetList"
-            :index-of-parent-list="index"
-            :parent-widget="null"
-            :designer="designer"
-          />
-        </template>
-      </template>
+      </draggable>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, provide } from 'vue'
+import draggable from 'vuedraggable'
 import ContainerWrapper from './container-widget/container-wrapper.vue'
 import FieldWrapper from './field-widget/field-wrapper.vue'
 import eventBus from '@/utils/event-bus'
@@ -44,8 +52,6 @@ const props = defineProps<{
   formConfig: any
   globalDsv: any
 }>()
-
-const widgetList = computed(() => props.designer.widgetList || [])
 
 const layoutClass = computed(() => {
   const layoutType = props.designer.formConfig?.layoutType || 'PC'
@@ -60,6 +66,16 @@ provide('getGlobalDsv', () => props.globalDsv)
 provide('getDesignerConfig', () => ({}))
 provide('previewState', false)
 provide('getReadMode', () => false)
+
+function onDragEnd() {
+  props.designer.emitHistoryChange()
+}
+
+function onWidgetAdd(evt: any) {
+  console.log('[xform] widget added:', evt)
+  console.log('[xform] widgetList after add:', props.designer.widgetList)
+  props.designer.emitHistoryChange()
+}
 
 eventBus.on('widget-selected', (widget: any) => {
   props.designer.setSelected(widget)
@@ -102,6 +118,11 @@ eventBus.on('widget-selected', (widget: any) => {
 }
 
 .widget-list-container {
-  min-height: 100%;
+  min-height: 400px;
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #667eea;
 }
 </style>

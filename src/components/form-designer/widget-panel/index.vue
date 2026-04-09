@@ -61,6 +61,14 @@
           </el-collapse>
         </el-scrollbar>
       </el-tab-pane>
+
+      <el-tab-pane :label="i18nText('designer.market.title')" name="2">
+        <MarketPanel :designer="designer" />
+      </el-tab-pane>
+
+      <el-tab-pane :label="i18nText('designer.template.title')" name="3">
+        <TemplatePanel :designer="designer" />
+      </el-tab-pane>
     </el-tabs>
   </el-container>
 </template>
@@ -70,6 +78,8 @@ import { ref, onMounted, computed, inject } from 'vue'
 import draggable from 'vuedraggable'
 import { containers as CONS, basicFields as BFS, advancedFields as AFS } from './widgetsConfig'
 import { generateId } from '@/utils/util'
+import MarketPanel from './market-panel.vue'
+import TemplatePanel from './template-panel.vue'
 
 const props = defineProps<{
   designer: any
@@ -85,6 +95,8 @@ const advancedFields = ref<any[]>([])
 function i18nText(key: string): string {
   const map: Record<string, string> = {
     'designer.hint.widgetSetting': '组件配置',
+    'designer.market.title': '组件市场',
+    'designer.template.title': '表单模板',
     'designer.containerTitle': '容器组件',
     'designer.basicFieldTitle': '基础字段',
     'designer.advancedFieldTitle': '高级字段',

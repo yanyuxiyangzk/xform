@@ -32,7 +32,7 @@
         </el-header>
         <el-main class="form-widget-main">
           <el-scrollbar class="container-scroll-bar" :style="{height: scrollerHeight}">
-            <x-form-widget :designer="designer" :form-config="designer.formConfig" :global-dsv="globalDsv" ref="formRef" />
+            <s-form-widget :designer="designer" :form-config="designer.formConfig" :global-dsv="globalDsv" ref="formRef" />
           </el-scrollbar>
         </el-main>
       </el-container>
@@ -49,7 +49,7 @@ import { ref, reactive, computed, onMounted, provide } from 'vue'
 import WidgetPanel from './widget-panel/index.vue'
 import ToolbarPanel from './toolbar-panel/index.vue'
 import SettingPanel from './setting-panel/index.vue'
-import XFormWidget from './form-widget/index.vue'
+import SFormWidget from './form-widget/index.vue'
 import { createDesigner } from './designer'
 import { addWindowResizeHandler, deepClone } from '@/utils/util'
 import { changeLocale } from '@/utils/i18n'
@@ -73,7 +73,7 @@ const props = defineProps({
       logoHeader: true,
       toolbarMaxWidth: 420,
       toolbarMinWidth: 300,
-      productName: 'XForm',
+      productName: 'SForm',
       productTitle: 'Form Designer',
       presetCssCode: '',
       languageName: 'zh-CN',

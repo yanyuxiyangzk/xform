@@ -138,7 +138,7 @@
     />
 
     <!-- Divider -->
-    < divider-widget
+    <divider-widget
       v-else-if="field.type === 'divider'"
       :field="field"
     />

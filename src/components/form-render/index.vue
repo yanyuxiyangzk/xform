@@ -10,26 +10,22 @@
     @submit.prevent
   >
     <template v-for="(widget, index) in widgetList" :key="widget.id">
-      <template v-if="widget.category === 'container'">
-        <component
-          :is="getContainerWidgetName(widget)"
-          :form-model="formDataModel"
-          :widget="widget"
-          :parent-list="widgetList"
-          :index-of-parent-list="index"
-          :parent-widget="null"
-        />
-      </template>
-      <template v-else>
-        <component
-          :is="getWidgetName(widget)"
-          :field="widget"
-          :form-model="formDataModel"
-          :parent-list="widgetList"
-          :index-of-parent-list="index"
-          :parent-widget="null"
-        />
-      </template>
+      <ContainerItem
+        v-if="widget.category === 'container'"
+        :widget="widget"
+        :form-model="formDataModel"
+        :parent-list="widgetList"
+        :index-of-parent-list="index"
+        :parent-widget="null"
+      />
+      <FieldRenderer
+        v-else
+        :field="widget"
+        :form-model="formDataModel"
+        :parent-list="widgetList"
+        :index-of-parent-list="index"
+        :parent-widget="null"
+      />
     </template>
   </el-form>
 </template>
@@ -40,6 +36,7 @@ import { buildDefaultFormJson, deepClone, generateId, traverseAllWidgets } from 
 import { changeLocale } from '@/utils/i18n'
 import eventBus from '@/utils/event-bus'
 import ContainerItem from './container-item/index.vue'
+import FieldRenderer from './field-renderer.vue'
 
 const props = defineProps<{
   formJson?: any
@@ -70,14 +67,6 @@ const labelPosition = computed(() => formConfig.value?.labelPosition || 'left')
 const labelWidth = computed(() => (formConfig.value?.labelWidth || 80) + 'px')
 const formSize = computed(() => formConfig.value?.size || 'default')
 const customClass = computed(() => formConfig.value?.customClass || '')
-
-function getContainerWidgetName(widget: any): string {
-  return widget.type + '-item'
-}
-
-function getWidgetName(widget: any): string {
-  return widget.type + '-widget'
-}
 
 function buildFormModel(widgetList: any[]) {
   if (!widgetList || widgetList.length === 0) return

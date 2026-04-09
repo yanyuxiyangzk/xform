@@ -1,7 +1,7 @@
 <template>
   <el-config-provider :locale="elLocale">
     <div id="app">
-      <x-form-designer :designer-config="designerConfig" />
+      <s-form-designer :designer-config="designerConfig" />
     </div>
   </el-config-provider>
 </template>
@@ -11,7 +11,7 @@ import { computed } from 'vue'
 import { ElConfigProvider } from 'element-plus'
 import zhCnLang from 'element-plus/es/locale/lang/zh-cn'
 import enLang from 'element-plus/es/locale/lang/en'
-import XFormDesigner from './components/form-designer/index.vue'
+import SFormDesigner from './components/form-designer/index.vue'
 
 const designerConfig = {
   languageMenu: true,
@@ -29,7 +29,7 @@ const designerConfig = {
   logoHeader: true,
   toolbarMaxWidth: 420,
   toolbarMinWidth: 300,
-  productName: 'XForm',
+  productName: 'SForm',
   productTitle: 'Form Designer',
   presetCssCode: '',
   languageName: 'zh-CN',

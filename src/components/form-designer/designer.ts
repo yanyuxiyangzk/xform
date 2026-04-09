@@ -441,6 +441,7 @@ export function createDesigner() {
       newWidget.options.name = newWidget.id
       newWidget.options.label = newWidget.options.label || newWidget.type.toLowerCase()
       delete newWidget.displayName
+      console.log('[xform] clone field widget:', newWidget.type, 'key:', newWidget.key, 'id:', newWidget.id)
       return newWidget
     },
 
@@ -639,6 +640,183 @@ export function createDesigner() {
       if (formConfigBackup) {
         overwriteObj(this.formConfig, JSON.parse(formConfigBackup))
       }
+    },
+
+    /* ==================== Data Source Methods ==================== */
+
+    getDataSourceByName(dsName: string): any {
+      if (!dsName || !this.formConfig.dataSources) {
+        return null
+      }
+      return this.formConfig.dataSources.find((ds: any) => ds.name === dsName) || null
+    },
+
+    getWidgetDataSource(widget: any): any {
+      if (!widget || !widget.options) {
+        return null
+      }
+      const opts = widget.options
+      if (!opts.dsEnabled) {
+        return null
+      }
+
+      return {
+        type: opts.dsType,
+        dsName: opts.dsName,
+        labelKey: opts.labelKey || 'label',
+        valueKey: opts.valueKey || 'value',
+        method: opts.dsMethod || 'GET',
+        dataPath: opts.dsDataPath || 'data',
+        params: opts.dsParams || [],
+        optionItems: opts.optionItems || [],
+        dataTarget: opts.dataTarget,
+        linkageType: opts.linkageType || 'filter',
+        targetValueKey: opts.targetValueKey,
+        targetLabelKey: opts.targetLabelKey,
+      }
+    },
+
+    async fetchDataSourceData(dsConfig: any): Promise<any[]> {
+      if (!dsConfig || dsConfig.type !== 'api' || !dsConfig.dsName) {
+        return []
+      }
+
+      const dataSource = this.getDataSourceByName(dsConfig.dsName)
+      if (!dataSource) {
+        console.warn(`Data source "${dsConfig.dsName}" not found`)
+        return []
+      }
+
+      try {
+        const method = dataSource.method || 'GET'
+        const url = dataSource.url
+        let options: RequestInit = {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+
+        if (method === 'GET' && dataSource.params) {
+          const params = new URLSearchParams()
+          dataSource.params.forEach((p: any) => {
+            if (p.name && p.value) {
+              params.append(p.name, p.value)
+            }
+          })
+          const queryString = params.toString()
+          if (queryString) {
+            // URL already contains query string check
+          }
+        } else if (method === 'POST' && dataSource.data) {
+          options.body = JSON.stringify(dataSource.data)
+        }
+
+        const response = await fetch(url, options)
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const result = await response.json()
+        const dataPath = dataSource.dataPath || 'data'
+        const pathParts = dataPath.split('.')
+        let data = result
+        for (const part of pathParts) {
+          data = data?.[part]
+        }
+
+        if (Array.isArray(data)) {
+          return data.map((item: any) => ({
+            label: item[dataSource.labelKey || 'label'] || item.name || '',
+            value: item[dataSource.valueKey || 'value'] || item.id || '',
+          }))
+        }
+
+        return []
+      } catch (error) {
+        console.error('Failed to fetch data source:', error)
+        return []
+      }
+    },
+
+    getLinkedWidget(widget: any): any {
+      if (!widget || !widget.options || !widget.options.dsEnabled) {
+        return null
+      }
+
+      const dsConfig = this.getWidgetDataSource(widget)
+      if (!dsConfig || dsConfig.type !== 'dataLinkage' || !dsConfig.dataTarget) {
+        return null
+      }
+
+      return this.findWidgetByName(dsConfig.dataTarget)
+    },
+
+    findWidgetByName(name: string): any {
+      let found: any = null
+      const traverse = (list: any[]) => {
+        for (const w of list) {
+          if (w.options?.name === name) {
+            found = w
+            return
+          }
+          if (w.widgetList) {
+            traverse(w.widgetList)
+          }
+          if (w.tabs) {
+            w.tabs.forEach((tab: any) => traverse(tab.widgetList || []))
+          }
+          if (w.cols) {
+            w.cols.forEach((col: any) => traverse(col.widgetList || []))
+          }
+          if (w.rows) {
+            w.rows.forEach((row: any) => row.cols?.forEach((col: any) => traverse(col.widgetList || [])))
+          }
+        }
+      }
+      traverse(this.widgetList)
+      return found
+    },
+
+    getLinkedOptions(widget: any, targetValue: any): any[] {
+      const linkedWidget = this.getLinkedWidget(widget)
+      if (!linkedWidget) {
+        return []
+      }
+
+      const dsConfig = this.getWidgetDataSource(linkedWidget)
+      if (!dsConfig) {
+        // Use static options
+        return linkedWidget.options?.optionItems || linkedWidget.options?.options || []
+      }
+
+      if (dsConfig.type === 'static') {
+        return dsConfig.optionItems || []
+      }
+
+      if (dsConfig.type === 'api') {
+        // Return empty array and let the component handle async fetch
+        return []
+      }
+
+      return []
+    },
+
+    initWidgetOptionsFromDataSource(widget: any, dataSource: any): any[] {
+      if (!widget || !dataSource) {
+        return []
+      }
+
+      if (dataSource.type === 'static') {
+        return dataSource.optionItems || []
+      }
+
+      if (dataSource.type === 'api') {
+        // Return empty and let the component do the fetch
+        return []
+      }
+
+      return []
     },
   }
 }

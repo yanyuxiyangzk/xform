@@ -21,7 +21,7 @@
             @end="onDragEnd"
           >
             <template #item="{ element, index }">
-              <field-wrapper
+              <FieldWrapper
                 v-if="!element.category"
                 :field="element"
                 :parent-list="col.widgetList"
@@ -29,7 +29,7 @@
                 :parent-widget="col"
                 :designer="designer"
               />
-              <container-wrapper
+              <ContainerWrapper
                 v-else
                 :widget="element"
                 :parent-list="col.widgetList"
@@ -60,7 +60,7 @@
             @end="onDragEnd"
           >
             <template #item="{ element, index }">
-              <field-wrapper
+              <FieldWrapper
                 v-if="!element.category"
                 :field="element"
                 :parent-list="tab.widgetList"
@@ -68,7 +68,7 @@
                 :parent-widget="tab"
                 :designer="designer"
               />
-              <container-wrapper
+              <ContainerWrapper
                 v-else
                 :widget="element"
                 :parent-list="tab.widgetList"
@@ -94,7 +94,7 @@
           @end="onDragEnd"
         >
           <template #item="{ element, index }">
-            <field-wrapper
+            <FieldWrapper
               v-if="!element.category"
               :field="element"
               :parent-list="widget.widgetList"
@@ -129,7 +129,7 @@
                   @end="onDragEnd"
                 >
                   <template #item="{ element, index }">
-                    <field-wrapper
+                    <FieldWrapper
                       v-if="!element.category"
                       :field="element"
                       :parent-list="cell.widgetList"
@@ -156,7 +156,7 @@
         @end="onDragEnd"
       >
         <template #item="{ element, index }">
-          <field-wrapper
+          <FieldWrapper
             v-if="!element.category"
             :field="element"
             :parent-list="widget.widgetList"
@@ -164,7 +164,7 @@
             :parent-widget="widget"
             :designer="designer"
           />
-          <container-wrapper
+          <ContainerWrapper
             v-else
             :widget="element"
             :parent-list="widget.widgetList"
@@ -182,6 +182,7 @@
 import { ref, computed, watch } from 'vue'
 import draggable from 'vuedraggable'
 import FieldWrapper from '../field-widget/field-wrapper.vue'
+import ContainerWrapper from './container-wrapper.vue'
 import eventBus from '@/utils/event-bus'
 
 const props = defineProps<{

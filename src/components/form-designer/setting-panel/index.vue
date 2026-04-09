@@ -57,6 +57,21 @@
         </el-scrollbar>
       </el-tab-pane>
 
+      <el-tab-pane :label="i18nText('designer.hint.dataSourceSetting')" name="3">
+        <el-scrollbar class="setting-scrollbar" :style="{height: scrollerHeight}">
+          <template v-if="selectedWidget">
+            <data-source-panel
+              :designer="designer"
+              :selected-widget="selectedWidget"
+              :global-dsv="globalDsv"
+            />
+          </template>
+          <template v-else>
+            <el-empty :description="i18nText('designer.hint.noSelectedWidgetHint')" />
+          </template>
+        </el-scrollbar>
+      </el-tab-pane>
+
       <el-tab-pane :label="i18nText('designer.hint.formSetting')" name="2">
         <el-scrollbar class="setting-scrollbar" :style="{height: scrollerHeight}">
           <form-setting :designer="designer" :form-config="formConfig" />
@@ -69,6 +84,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import FormSetting from './form-setting.vue'
+import DataSourcePanel from './data-source-panel.vue'
 
 const props = defineProps<{
   designer: any
@@ -87,6 +103,7 @@ function i18nText(key: string): string {
   const map: Record<string, string> = {
     'designer.hint.widgetSetting': '组件配置',
     'designer.hint.formSetting': '表单设置',
+    'designer.hint.dataSourceSetting': '数据源',
     'designer.hint.noSelectedWidgetHint': '请选择组件',
     'designer.setting.commonSetting': '公共属性',
     'designer.setting.advancedSetting': '高级属性',
