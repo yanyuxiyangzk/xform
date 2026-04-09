@@ -13,6 +13,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  optimizeDeps: {
+    include: ['quill'],
+  },
   server: {
     port: 3000,
     host: true,

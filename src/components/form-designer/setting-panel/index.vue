@@ -47,6 +47,72 @@
                     <el-switch v-model="optionModel.labelHidden" @change="updateOption('labelHidden', optionModel.labelHidden)" />
                   </el-form-item>
                 </el-collapse-item>
+
+                <el-collapse-item name="3" :title="i18nText('designer.setting.eventSetting')">
+                  <el-form-item :label="t('onCreated')" v-if="hasOption('onCreated')">
+                    <el-input
+                      v-model="optionModel.onCreated"
+                      type="textarea"
+                      :rows="2"
+                      :placeholder="t('eventPlaceholder')"
+                      @input="updateOption('onCreated', optionModel.onCreated)"
+                    />
+                  </el-form-item>
+                  <el-form-item :label="t('onMounted')" v-if="hasOption('onMounted')">
+                    <el-input
+                      v-model="optionModel.onMounted"
+                      type="textarea"
+                      :rows="2"
+                      :placeholder="t('eventPlaceholder')"
+                      @input="updateOption('onMounted', optionModel.onMounted)"
+                    />
+                  </el-form-item>
+                  <el-form-item :label="t('onInput')" v-if="hasOption('onInput')">
+                    <el-input
+                      v-model="optionModel.onInput"
+                      type="textarea"
+                      :rows="2"
+                      :placeholder="t('eventPlaceholder')"
+                      @input="updateOption('onInput', optionModel.onInput)"
+                    />
+                  </el-form-item>
+                  <el-form-item :label="t('onChange')" v-if="hasOption('onChange')">
+                    <el-input
+                      v-model="optionModel.onChange"
+                      type="textarea"
+                      :rows="2"
+                      :placeholder="t('eventPlaceholder')"
+                      @input="updateOption('onChange', optionModel.onChange)"
+                    />
+                  </el-form-item>
+                  <el-form-item :label="t('onFocus')" v-if="hasOption('onFocus')">
+                    <el-input
+                      v-model="optionModel.onFocus"
+                      type="textarea"
+                      :rows="2"
+                      :placeholder="t('eventPlaceholder')"
+                      @input="updateOption('onFocus', optionModel.onFocus)"
+                    />
+                  </el-form-item>
+                  <el-form-item :label="t('onBlur')" v-if="hasOption('onBlur')">
+                    <el-input
+                      v-model="optionModel.onBlur"
+                      type="textarea"
+                      :rows="2"
+                      :placeholder="t('eventPlaceholder')"
+                      @input="updateOption('onBlur', optionModel.onBlur)"
+                    />
+                  </el-form-item>
+                  <el-form-item :label="t('onValidate')" v-if="hasOption('onValidate')">
+                    <el-input
+                      v-model="optionModel.onValidate"
+                      type="textarea"
+                      :rows="2"
+                      :placeholder="t('eventPlaceholder')"
+                      @input="updateOption('onValidate', optionModel.onValidate)"
+                    />
+                  </el-form-item>
+                </el-collapse-item>
               </el-collapse>
             </el-form>
           </template>
@@ -95,7 +161,7 @@ const props = defineProps<{
 
 const activeTab = ref('1')
 const scrollerHeight = ref('0')
-const collapseNames = ref(['1', '2'])
+const collapseNames = ref(['1', '2', '3'])
 
 const optionModel = computed(() => props.selectedWidget?.options || {})
 
@@ -107,6 +173,7 @@ function i18nText(key: string): string {
     'designer.hint.noSelectedWidgetHint': '请选择组件',
     'designer.setting.commonSetting': '公共属性',
     'designer.setting.advancedSetting': '高级属性',
+    'designer.setting.eventSetting': '事件设置',
     'label': '标签',
     'name': '字段名',
     'placeholder': '占位符',
@@ -119,6 +186,14 @@ function i18nText(key: string): string {
     'customClass': '自定义类',
     'labelWidth': '标签宽度',
     'labelHidden': '隐藏标签',
+    'onCreated': '创建完成',
+    'onMounted': '挂载完成',
+    'onInput': '输入事件',
+    'onChange': '值变化',
+    'onFocus': '获得焦点',
+    'onBlur': '失去焦点',
+    'onValidate': '校验事件',
+    'eventPlaceholder': '输入JS代码，如: console.log(value)',
   }
   return map[key] || key
 }
