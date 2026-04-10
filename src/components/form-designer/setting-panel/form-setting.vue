@@ -24,9 +24,9 @@
     </el-form-item>
     <el-form-item :label="t('layoutType')">
       <el-radio-group v-model="formConfig.layoutType">
-        <el-radio label="PC">PC</el-radio>
-        <el-radio label="Pad">Pad</el-radio>
-        <el-radio label="H5">H5</el-radio>
+        <el-radio value="PC">PC</el-radio>
+        <el-radio value="Pad">Pad</el-radio>
+        <el-radio value="H5">H5</el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item :label="t('cssCode')">

@@ -74,7 +74,7 @@
         <el-radio
           v-for="item in getOptions(field)"
           :key="item.value"
-          :label="item.value"
+          :value="item.value"
         >
           {{ item.label }}
         </el-radio>

@@ -55,8 +55,8 @@
         </el-form-item>
         <el-form-item :label="i18nText('designer.datasource.type')" required>
           <el-radio-group v-model="formData.type" @change="onTypeChange">
-            <el-radio label="static">{{ i18nText('designer.datasource.static') }}</el-radio>
-            <el-radio label="dynamic">{{ i18nText('designer.datasource.dynamic') }}</el-radio>
+            <el-radio value="static">{{ i18nText('designer.datasource.static') }}</el-radio>
+            <el-radio value="dynamic">{{ i18nText('designer.datasource.dynamic') }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -66,8 +66,8 @@
           </el-form-item>
           <el-form-item :label="i18nText('designer.datasource.method')">
             <el-radio-group v-model="formData.method">
-              <el-radio label="GET">GET</el-radio>
-              <el-radio label="POST">POST</el-radio>
+              <el-radio value="GET">GET</el-radio>
+              <el-radio value="POST">POST</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item :label="i18nText('designer.datasource.dataPath')">

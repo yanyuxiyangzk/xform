@@ -12,9 +12,9 @@
         <!-- Data Source Type Selection -->
         <el-form-item :label="t('dsType')">
           <el-radio-group v-model="optionModel.dsType" @change="onDsTypeChange">
-            <el-radio label="static">{{ t('dsTypeStatic') }}</el-radio>
-            <el-radio label="api">{{ t('dsTypeApi') }}</el-radio>
-            <el-radio label="dataLinkage">{{ t('dsTypeDataLinkage') }}</el-radio>
+            <el-radio value="static">{{ t('dsTypeStatic') }}</el-radio>
+            <el-radio value="api">{{ t('dsTypeApi') }}</el-radio>
+            <el-radio value="dataLinkage">{{ t('dsTypeDataLinkage') }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -102,8 +102,8 @@
 
           <el-form-item :label="t('linkageType')">
             <el-radio-group v-model="optionModel.linkageType">
-              <el-radio label="filter">{{ t('linkageTypeFilter') }}</el-radio>
-              <el-radio label="fetch">{{ t('linkageTypeFetch') }}</el-radio>
+              <el-radio value="filter">{{ t('linkageTypeFilter') }}</el-radio>
+              <el-radio value="fetch">{{ t('linkageTypeFetch') }}</el-radio>
             </el-radio-group>
           </el-form-item>
 
