@@ -22,18 +22,19 @@ const SYSTEM_PROMPT = `你是一个表单生成助手。用户描述他们想要
 规则：
 1. 只返回 JSON，不要其他解释
 2. JSON 格式必须包含 widgetList 和 formConfig
-3. widgetList 是组件数组，每个组件需要 type 和 options
+3. widgetList 是组件数组，每个组件需要 type, formItemFlag 和 options
 4. options 必须包含 name（字段名）和 label（标签）
-5. 支持的组件类型：input, textarea, select, radio, checkbox, date, time, switch, slider, rate, cascader, color, number
-6. 每个组件需要有唯一的 name
+5. formItemFlag 必须为 true，表示这是表单项
+6. 支持的组件类型：input, textarea, select, radio, checkbox, date, time, switch, slider, rate, cascader, color, number
+7. 每个组件需要有唯一的 name
 
 示例输入：创建一个登录表单，包含用户名和密码
 示例输出：
 \`\`\`json
 {
   "widgetList": [
-    {"type": "input", "options": {"name": "username", "label": "用户名", "placeholder": "请输入用户名", "type": "text"}},
-    {"type": "input", "options": {"name": "password", "label": "密码", "placeholder": "请输入密码", "type": "password"}}
+    {"type": "input", "formItemFlag": true, "options": {"name": "username", "label": "用户名", "placeholder": "请输入用户名", "type": "text"}},
+    {"type": "input", "formItemFlag": true, "options": {"name": "password", "label": "密码", "placeholder": "请输入密码", "type": "password"}}
   ],
   "formConfig": {}
 }
@@ -118,8 +119,8 @@ function generateMockResponse(userMessage: string): string {
     return `\`\`\`json
 {
   "widgetList": [
-    {"type": "input", "options": {"name": "username", "label": "用户名", "placeholder": "请输入用户名", "type": "text"}},
-    {"type": "input", "options": {"name": "password", "label": "密码", "placeholder": "请输入密码", "type": "password"}}
+    {"type": "input", "formItemFlag": true, "options": {"name": "username", "label": "用户名", "placeholder": "请输入用户名", "type": "text"}},
+    {"type": "input", "formItemFlag": true, "options": {"name": "password", "label": "密码", "placeholder": "请输入密码", "type": "password"}}
   ],
   "formConfig": {}
 }
@@ -130,9 +131,9 @@ function generateMockResponse(userMessage: string): string {
     return `\`\`\`json
 {
   "widgetList": [
-    {"type": "input", "options": {"name": "name", "label": "姓名", "placeholder": "请输入姓名"}},
-    {"type": "input", "options": {"name": "phone", "label": "手机号", "placeholder": "请输入手机号", "type": "tel"}},
-    {"type": "input", "options": {"name": "email", "label": "邮箱", "placeholder": "请输入邮箱", "type": "email"}}
+    {"type": "input", "formItemFlag": true, "options": {"name": "name", "label": "姓名", "placeholder": "请输入姓名"}},
+    {"type": "input", "formItemFlag": true, "options": {"name": "phone", "label": "手机号", "placeholder": "请输入手机号", "type": "tel"}},
+    {"type": "input", "formItemFlag": true, "options": {"name": "email", "label": "邮箱", "placeholder": "请输入邮箱", "type": "email"}}
   ],
   "formConfig": {}
 }
@@ -143,10 +144,10 @@ function generateMockResponse(userMessage: string): string {
     return `\`\`\`json
 {
   "widgetList": [
-    {"type": "input", "options": {"name": "title", "label": "问卷标题", "placeholder": "请输入问卷标题"}},
-    {"type": "textarea", "options": {"name": "description", "label": "问卷说明", "placeholder": "请输入说明"}},
-    {"type": "radio", "options": {"name": "satisfaction", "label": "总体满意度", "optionItems": [{"label": "非常满意", "value": "5"}, {"label": "满意", "value": "4"}, {"label": "一般", "value": "3"}]}},
-    {"type": "checkbox", "options": {"name": "interests", "label": "感兴趣的领域", "optionItems": [{"label": "前端开发", "value": "frontend"}, {"label": "后端开发", "value": "backend"}]}}
+    {"type": "input", "formItemFlag": true, "options": {"name": "title", "label": "问卷标题", "placeholder": "请输入问卷标题"}},
+    {"type": "textarea", "formItemFlag": true, "options": {"name": "description", "label": "问卷说明", "placeholder": "请输入说明"}},
+    {"type": "radio", "formItemFlag": true, "options": {"name": "satisfaction", "label": "总体满意度", "optionItems": [{"label": "非常满意", "value": "5"}, {"label": "满意", "value": "4"}, {"label": "一般", "value": "3"}]}},
+    {"type": "checkbox", "formItemFlag": true, "options": {"name": "interests", "label": "感兴趣的领域", "optionItems": [{"label": "前端开发", "value": "frontend"}, {"label": "后端开发", "value": "backend"}]}}
   ],
   "formConfig": {}
 }
@@ -157,8 +158,8 @@ function generateMockResponse(userMessage: string): string {
   return `\`\`\`json
 {
   "widgetList": [
-    {"type": "input", "options": {"name": "field1", "label": "字段1", "placeholder": "请输入"}},
-    {"type": "input", "options": {"name": "field2", "label": "字段2", "placeholder": "请输入"}}
+    {"type": "input", "formItemFlag": true, "options": {"name": "field1", "label": "字段1", "placeholder": "请输入"}},
+    {"type": "input", "formItemFlag": true, "options": {"name": "field2", "label": "字段2", "placeholder": "请输入"}}
   ],
   "formConfig": {}
 }
