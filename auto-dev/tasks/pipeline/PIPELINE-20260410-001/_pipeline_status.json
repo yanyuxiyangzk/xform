@@ -1,0 +1,32 @@
+{
+  "pipelineId": "PIPELINE-20260410-001",
+  "title": "AI表单生成功能",
+  "status": "completed",
+  "currentPhase": "deploy",
+  "phases": {
+    "requirement": {
+      "status": "completed",
+      "output": "01/requirement.md"
+    },
+    "design": {
+      "status": "completed",
+      "output": "02/design.md"
+    },
+    "code": {
+      "status": "completed",
+      "files": [
+        "src/utils/ai-chat.ts",
+        "src/components/form-designer/toolbar-panel/ai-assistant-dialog.vue",
+        "src/components/form-designer/toolbar-panel/index.vue"
+      ]
+    },
+    "test": {
+      "status": "pending"
+    },
+    "deploy": {
+      "status": "pending"
+    }
+  },
+  "createdAt": "2026-04-10",
+  "updatedAt": "2026-04-10"
+}
