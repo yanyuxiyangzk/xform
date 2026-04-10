@@ -23,21 +23,32 @@
     <el-dialog
       v-model="showPreviewDialogFlag"
       :title="i18nText('designer.toolbar.preview')"
-      width="75%"
-      center
+      width="80%"
       destroy-on-close
     >
-      <div class="form-preview-wrapper">
-        <x-form-render
-          ref="preFormRef"
-          :form-json="formJson"
-          :form-data="testFormData"
-          :preview-state="true"
-        />
-      </div>
+      <el-tabs>
+        <el-tab-pane label="表单预览" name="preview">
+          <div class="form-preview-wrapper">
+            <x-form-render
+              ref="preFormRef"
+              :form-json="formJson"
+              :form-data="testFormData"
+              :preview-state="true"
+            />
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="表单数据" name="data">
+          <div class="form-data-wrapper">
+            <el-alert v-if="!formDataJson" type="info" :closable="false" show-icon>
+              点击「获取数据」按钮获取表单数据
+            </el-alert>
+            <pre v-else class="json-display">{{ formDataJson }}</pre>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
       <template #footer>
         <el-button @click="showPreviewDialogFlag = false">{{ i18nText('designer.hint.closePreview') }}</el-button>
-        <el-button type="primary" @click="getFormData">{{ i18nText('designer.hint.getFormData') }}</el-button>
+        <el-button type="primary" @click="refreshFormData">{{ i18nText('designer.hint.getFormData') }}</el-button>
       </template>
     </el-dialog>
 
@@ -100,6 +111,7 @@ const importTemplate = ref('')
 const jsonContent = ref('')
 const preFormRef = ref()
 const testFormData = ref({})
+const formDataJson = ref('')
 
 const formJson = computed(() => ({
   widgetList: deepClone(props.designer.widgetList),
@@ -179,12 +191,16 @@ function copyJson() {
 
 function getFormData() {
   if (preFormRef.value) {
-    preFormRef.value.getFormData().then((data: any) => {
-      alert(JSON.stringify(data))
+    preFormRef.value.getFormData(false).then((data: any) => {
+      formDataJson.value = JSON.stringify(data, null, 2)
     }).catch((error: any) => {
-      alert(error)
+      formDataJson.value = JSON.stringify({ error: error }, null, 2)
     })
   }
+}
+
+function refreshFormData() {
+  getFormData()
 }
 </script>
 
@@ -211,6 +227,21 @@ function getFormData() {
 .form-preview-wrapper {
   max-height: 60vh;
   overflow-y: auto;
+}
+
+.form-data-wrapper {
+  .json-display {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 16px;
+    border-radius: 8px;
+    max-height: 50vh;
+    overflow: auto;
+    font-size: 13px;
+    font-family: 'Monaco', 'Menlo', monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
 }
 
 .code-editor-wrapper {
