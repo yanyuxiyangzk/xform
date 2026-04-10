@@ -194,17 +194,10 @@ function copyJson() {
 }
 
 function handleGetFormData() {
-  console.log('[xform] handleGetFormData called')
-  console.log('[xform] preFormRef:', preFormRef.value)
-  console.log('[xform] preFormRef.getFormData:', preFormRef.value?.getFormData)
-  console.log('[xform] formJson:', formJson.value)
-
   if (preFormRef.value && preFormRef.value.getFormData) {
     preFormRef.value.getFormData(false).then((data: any) => {
-      console.log('[xform] Form data result:', data)
       formDataJson.value = JSON.stringify(data, null, 2)
     }).catch((error: any) => {
-      console.error('[xform] Get form data error:', error)
       formDataJson.value = JSON.stringify({ error: String(error) }, null, 2)
     })
   } else {

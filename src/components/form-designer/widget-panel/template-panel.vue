@@ -60,6 +60,7 @@ const templateList = ref([
                 id: 'input' + Date.now(),
                 key: 'input' + Date.now(),
                 type: 'input',
+                formItemFlag: true,
                 options: {
                   name: 'name',
                   label: '姓名',
@@ -79,6 +80,7 @@ const templateList = ref([
                 id: 'input' + (Date.now() + 1),
                 key: 'input' + (Date.now() + 1),
                 type: 'input',
+                formItemFlag: true,
                 options: {
                   name: 'phone',
                   label: '手机号',
@@ -96,6 +98,7 @@ const templateList = ref([
         id: 'input' + (Date.now() + 2),
         key: 'input' + (Date.now() + 2),
         type: 'input',
+        formItemFlag: true,
         options: {
           name: 'email',
           label: '邮箱',
@@ -124,6 +127,7 @@ const templateList = ref([
         id: 'input' + Date.now(),
         key: 'input' + Date.now(),
         type: 'input',
+        formItemFlag: true,
         options: {
           name: 'title',
           label: '问卷标题',
@@ -135,6 +139,7 @@ const templateList = ref([
         id: 'textarea' + Date.now(),
         key: 'textarea' + Date.now(),
         type: 'textarea',
+        formItemFlag: true,
         options: {
           name: 'description',
           label: '问卷说明',
@@ -146,6 +151,7 @@ const templateList = ref([
         id: 'radio' + Date.now(),
         key: 'radio' + Date.now(),
         type: 'radio',
+        formItemFlag: true,
         options: {
           name: 'satisfaction',
           label: '总体满意度',
@@ -163,6 +169,7 @@ const templateList = ref([
         id: 'checkbox' + Date.now(),
         key: 'checkbox' + Date.now(),
         type: 'checkbox',
+        formItemFlag: true,
         options: {
           name: 'interests',
           label: '感兴趣的领域',
@@ -195,6 +202,7 @@ const templateList = ref([
         id: 'input' + Date.now(),
         key: 'input' + Date.now(),
         type: 'input',
+        formItemFlag: true,
         options: {
           name: 'orderNo',
           label: '订单号',
@@ -206,6 +214,7 @@ const templateList = ref([
         id: 'number' + Date.now(),
         key: 'number' + Date.now(),
         type: 'number',
+        formItemFlag: true,
         options: {
           name: 'quantity',
           label: '数量',
@@ -218,6 +227,7 @@ const templateList = ref([
         id: 'select' + Date.now(),
         key: 'select' + Date.now(),
         type: 'select',
+        formItemFlag: true,
         options: {
           name: 'status',
           label: '订单状态',
@@ -234,6 +244,7 @@ const templateList = ref([
         id: 'date' + Date.now(),
         key: 'date' + Date.now(),
         type: 'date',
+        formItemFlag: true,
         options: {
           name: 'deliveryDate',
           label: '期望交付日期',
