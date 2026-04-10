@@ -12,8 +12,6 @@
     <div class="right-toolbar">
       <el-button link @click="clearFormWidget">{{ i18nText('designer.toolbar.clear') }}</el-button>
       <el-button link @click="previewForm">{{ i18nText('designer.toolbar.preview') }}</el-button>
-      <el-button link @click="showTemplateDialog">{{ i18nText('designer.toolbar.formTemplate') }}</el-button>
-      <el-button link @click="showDataSourceDialog">{{ i18nText('designer.toolbar.dataSource') }}</el-button>
       <el-button link type="primary" @click="showAiAssistantDialog">
         <span>🤖</span> {{ i18nText('designer.toolbar.aiAssistant') }}
       </el-button>
@@ -78,12 +76,6 @@
       </template>
     </el-dialog>
 
-    <!-- Template Dialog -->
-    <TemplateDialog v-model="showTemplateDialogFlag" :designer="designer" />
-
-    <!-- DataSource Dialog -->
-    <DataSourceDialog v-model="showDataSourceDialogFlag" :designer="designer" />
-
     <!-- AI Assistant Dialog -->
     <AiAssistantDialog v-model="showAiAssistantDialogFlag" :designer="designer" />
   </div>
@@ -93,8 +85,6 @@
 import { ref, computed } from 'vue'
 import { deepClone, generateId, copyToClipboard } from '@/utils/util'
 import XFormRender from '@/components/form-render/index.vue'
-import TemplateDialog from './template-dialog.vue'
-import DataSourceDialog from './datasource-dialog.vue'
 import AiAssistantDialog from './ai-assistant-dialog.vue'
 
 const props = defineProps<{
@@ -105,8 +95,6 @@ const props = defineProps<{
 const showPreviewDialogFlag = ref(false)
 const showImportJsonDialogFlag = ref(false)
 const showExportJsonDialogFlag = ref(false)
-const showTemplateDialogFlag = ref(false)
-const showDataSourceDialogFlag = ref(false)
 const showAiAssistantDialogFlag = ref(false)
 const importTemplate = ref('')
 const jsonContent = ref('')
@@ -127,8 +115,6 @@ function i18nText(key: string): string {
     'designer.toolbar.redoHint': '重做',
     'designer.toolbar.clear': '清空',
     'designer.toolbar.preview': '预览',
-    'designer.toolbar.formTemplate': '模板',
-    'designer.toolbar.dataSource': '数据源',
     'designer.toolbar.aiAssistant': 'AI助手',
     'designer.toolbar.importJson': '导入JSON',
     'designer.toolbar.exportJson': '导出JSON',
@@ -156,14 +142,6 @@ function clearFormWidget() {
 
 function previewForm() {
   showPreviewDialogFlag.value = true
-}
-
-function showTemplateDialog() {
-  showTemplateDialogFlag.value = true
-}
-
-function showDataSourceDialog() {
-  showDataSourceDialogFlag.value = true
 }
 
 function showAiAssistantDialog() {
