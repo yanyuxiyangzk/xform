@@ -26,29 +26,25 @@
       width="80%"
       destroy-on-close
     >
-      <el-tabs>
-        <el-tab-pane label="表单预览" name="preview">
-          <div class="form-preview-wrapper">
-            <x-form-render
-              ref="preFormRef"
-              :form-json="formJson"
-              :form-data="testFormData"
-              :preview-state="true"
-            />
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="表单数据" name="data">
-          <div class="form-data-wrapper">
-            <el-alert v-if="!formDataJson" type="info" :closable="false" show-icon>
-              点击「获取数据」按钮获取表单数据
-            </el-alert>
-            <pre v-else class="json-display">{{ formDataJson }}</pre>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
+      <div class="form-preview-wrapper">
+        <x-form-render
+          ref="preFormRef"
+          :form-json="formJson"
+          :form-data="testFormData"
+          :preview-state="true"
+        />
+      </div>
+      <!-- 表单数据展示区域 -->
+      <div v-if="formDataJson" class="form-data-display">
+        <div class="data-header">
+          <span>表单数据</span>
+          <el-button size="small" @click="copyFormData">复制</el-button>
+        </div>
+        <pre class="json-content">{{ formDataJson }}</pre>
+      </div>
       <template #footer>
         <el-button @click="showPreviewDialogFlag = false">{{ i18nText('designer.hint.closePreview') }}</el-button>
-        <el-button type="primary" @click="refreshFormData">{{ i18nText('designer.hint.getFormData') }}</el-button>
+        <el-button type="primary" @click="handleGetFormData">{{ i18nText('designer.hint.getFormData') }}</el-button>
       </template>
     </el-dialog>
 
@@ -94,7 +90,8 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { deepClone, generateId, copyToClipboard } from '@/utils/util'
+import { ElMessage } from 'element-plus'
+import { deepClone, copyToClipboard } from '@/utils/util'
 import XFormRender from '@/components/form-render/index.vue'
 import AiAssistantDialog from './ai-assistant-dialog.vue'
 
@@ -196,18 +193,24 @@ function copyJson() {
   copyToClipboard(jsonContent.value, { target: {} }, { success: () => alert('Copied!') }, 'Copied!', 'Failed!')
 }
 
-function getFormData() {
+function handleGetFormData() {
   if (preFormRef.value) {
     preFormRef.value.getFormData(false).then((data: any) => {
       formDataJson.value = JSON.stringify(data, null, 2)
     }).catch((error: any) => {
-      formDataJson.value = JSON.stringify({ error: error }, null, 2)
+      formDataJson.value = JSON.stringify({ error: String(error) }, null, 2)
     })
   }
 }
 
-function refreshFormData() {
-  getFormData()
+function copyFormData() {
+  if (formDataJson.value) {
+    navigator.clipboard.writeText(formDataJson.value).then(() => {
+      ElMessage.success('已复制到剪贴板')
+    }).catch(() => {
+      ElMessage.error('复制失败')
+    })
+  }
 }
 </script>
 
@@ -236,16 +239,31 @@ function refreshFormData() {
   overflow-y: auto;
 }
 
-.form-data-wrapper {
-  .json-display {
+.form-data-display {
+  margin-top: 16px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+
+  .data-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f5f7fa;
+    border-bottom: 1px solid #dcdfe6;
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  .json-content {
+    margin: 0;
+    padding: 12px;
     background: #1e1e1e;
     color: #d4d4d4;
-    padding: 16px;
-    border-radius: 8px;
-    max-height: 50vh;
-    overflow: auto;
-    font-size: 13px;
+    font-size: 12px;
     font-family: 'Monaco', 'Menlo', monospace;
+    max-height: 200px;
+    overflow: auto;
     white-space: pre-wrap;
     word-break: break-all;
   }
