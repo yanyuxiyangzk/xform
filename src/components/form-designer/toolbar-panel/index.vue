@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { deepClone, generateId, copyToClipboard } from '@/utils/util'
 import XFormRender from '@/components/form-render/index.vue'
 import AiAssistantDialog from './ai-assistant-dialog.vue'
@@ -117,6 +117,13 @@ const formJson = computed(() => ({
   widgetList: deepClone(props.designer.widgetList),
   formConfig: deepClone(props.designer.formConfig),
 }))
+
+// 重置表单数据当预览对话框打开时
+watch(showPreviewDialogFlag, (val) => {
+  if (val) {
+    formDataJson.value = ''
+  }
+})
 
 const undoDisabled = computed(() => props.designer.undoEnabled())
 const redoDisabled = computed(() => props.designer.redoEnabled())
