@@ -367,8 +367,9 @@ function confirmTemplate() {
         widgetList: deepClone(tpl.widgetList),
         formConfig: deepClone(tpl.formConfig)
       })
+    } else {
+      props.designer.initDesigner()
     }
-    props.designer.initDesigner()
   }
   dialogVisible.value = false
 }

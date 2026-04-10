@@ -262,8 +262,9 @@ function selectTemplate(tpl: any) {
       widgetList: deepClone(tpl.widgetList),
       formConfig: deepClone(tpl.formConfig)
     })
+  } else {
+    props.designer.initDesigner()
   }
-  props.designer.initDesigner()
 }
 </script>
 
