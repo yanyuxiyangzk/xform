@@ -1,0 +1,1 @@
+{"nodes": [{"id": "widget", "label": "widget.ts", "file_type": "code", "source_file": "src\\types\\widget.ts", "source_location": "L1"}], "edges": [{"source": "widget", "target": "api", "relation": "imports_from", "confidence": "EXTRACTED", "source_file": "src\\types\\widget.ts", "source_location": "L2", "weight": 1.0}]}

@@ -108,9 +108,11 @@ function buildDataFromWidget(wItem: any) {
     }
   } else if (wItem.formItemFlag) {
     if (!formDataModel.hasOwnProperty(wItem.options.name)) {
-      formDataModel[wItem.options.name] = wItem.options.defaultValue
-    } else {
-      formDataModel[wItem.options.name] = deepClone(props.formData?.[wItem.options.name])
+      if (props.formData && Object.prototype.hasOwnProperty.call(props.formData, wItem.options.name)) {
+        formDataModel[wItem.options.name] = deepClone(props.formData[wItem.options.name])
+      } else {
+        formDataModel[wItem.options.name] = wItem.options.defaultValue
+      }
     }
   }
 }

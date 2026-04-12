@@ -194,8 +194,11 @@ function copyJson() {
 }
 
 function handleGetFormData() {
+  console.log(preFormRef.value)
+  
   if (preFormRef.value && preFormRef.value.getFormData) {
     preFormRef.value.getFormData(false).then((data: any) => {
+      console.log(JSON.stringify(data, null, 2))
       formDataJson.value = JSON.stringify(data, null, 2)
     }).catch((error: any) => {
       formDataJson.value = JSON.stringify({ error: String(error) }, null, 2)
