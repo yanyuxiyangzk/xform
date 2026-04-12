@@ -1,6 +1,6 @@
 <template>
   <el-slider
-    v-model="value"
+    v-model="formModel[field.options.name]"
     :disabled="field.options.disabled"
     :min="field.options.min"
     :max="field.options.max"
@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import { useRefExpose } from './useRefExpose'
 
 const props = defineProps<{
@@ -23,19 +23,6 @@ const props = defineProps<{
 
 const { registerRef } = useRefExpose(props)
 registerRef(props.field.options.name)
-
-const value = ref(props.field.options.defaultValue)
-
-watch(() => props.field.options.defaultValue, (newVal) => {
-  value.value = newVal
-})
-
-watch(value, (newVal) => {
-  const fieldName = props.field.options.name
-  if (props.formModel.hasOwnProperty(fieldName)) {
-    props.formModel[fieldName] = newVal
-  }
-})
 
 function handleChange(val: any) {}
 </script>

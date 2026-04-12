@@ -1,6 +1,6 @@
 <template>
   <el-input
-    v-model="value"
+    v-model="formModel[field.options.name]"
     type="textarea"
     :placeholder="field.options.placeholder"
     :rows="field.options.rows || 4"
@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
 import { useRefExpose } from './useRefExpose'
 
 const props = defineProps<{
@@ -25,19 +24,6 @@ const props = defineProps<{
 
 const { registerRef } = useRefExpose(props)
 registerRef(props.field.options.name)
-
-const value = ref(props.field.options.defaultValue)
-
-watch(() => props.field.options.defaultValue, (newVal) => {
-  value.value = newVal
-})
-
-watch(value, (newVal) => {
-  const fieldName = props.field.options.name
-  if (props.formModel.hasOwnProperty(fieldName)) {
-    props.formModel[fieldName] = newVal
-  }
-})
 
 function handleInput(val: any) {}
 function handleChange(val: any) {}

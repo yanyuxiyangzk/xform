@@ -1,6 +1,6 @@
 <template>
   <el-upload
-    v-model:file-list="fileList"
+    v-model:file-list="formModel[field.options.name]"
     :action="field.options.action"
     :accept="field.options.accept"
     :limit="field.options.limit"
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import { useRefExpose } from './useRefExpose'
 import { ElMessage } from 'element-plus'
 
@@ -31,21 +31,7 @@ const props = defineProps<{
 const { registerRef } = useRefExpose(props)
 registerRef(props.field.options.name)
 
-const fileList = ref<any[]>([])
 const uploadText = '点击上传'
-
-watch(() => props.field.options.defaultValue, (newVal) => {
-  if (newVal && Array.isArray(newVal)) {
-    fileList.value = newVal
-  }
-}, { immediate: true })
-
-watch(fileList, (newVal) => {
-  const fieldName = props.field.options.name
-  if (props.formModel.hasOwnProperty(fieldName)) {
-    props.formModel[fieldName] = newVal
-  }
-}, { deep: true })
 
 function handleBeforeUpload(file: any) {
   const maxSize = (props.field.options.fileMaxSize || 10) * 1024 * 1024
@@ -57,7 +43,7 @@ function handleBeforeUpload(file: any) {
 }
 
 function handleSuccess(response: any, file: any, fileList: any[]) {
-  updateFileList(fileList)
+  // File list is automatically updated via v-model
 }
 
 function handleError(err: any, file: any, fileList: any[]) {
@@ -65,17 +51,10 @@ function handleError(err: any, file: any, fileList: any[]) {
 }
 
 function handleRemove(file: any, fileList: any[]) {
-  updateFileList(fileList)
+  // File list is automatically updated via v-model
 }
 
 function handlePreview(file: any) {
   // Preview file
-}
-
-function updateFileList(list: any[]) {
-  fileList.value = list.map(f => ({
-    name: f.name,
-    url: f.response?.url || f.url,
-  }))
 }
 </script>

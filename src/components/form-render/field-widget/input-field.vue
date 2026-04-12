@@ -1,6 +1,6 @@
 <template>
   <el-input
-    v-model="value"
+    v-model="formModel[field.options.name]"
     :type="field.options.type || 'text'"
     :placeholder="field.options.placeholder"
     :size="field.options.size"
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, inject, computed } from 'vue'
+import { watch, computed } from 'vue'
 import { useRefExpose } from './useRefExpose'
 
 const props = defineProps<{
@@ -32,19 +32,6 @@ const props = defineProps<{
 const { registerRef } = useRefExpose(props)
 const refName = computed(() => props.field.options.name)
 registerRef(refName.value)
-
-const value = ref(props.field.options.defaultValue)
-
-watch(() => props.field.options.defaultValue, (newVal) => {
-  value.value = newVal
-})
-
-watch(value, (newVal) => {
-  const fieldName = props.field.options.name
-  if (props.formModel.hasOwnProperty(fieldName)) {
-    props.formModel[fieldName] = newVal
-  }
-})
 
 function handleInput(val: any) {
   // Real-time input handling
@@ -58,7 +45,7 @@ function handleFocus(event: any) {
   if (props.field.options.onFocus) {
     try {
       const func = new Function('field', 'value', event, props.field.options.onFocus)
-      func(props.field, value.value, event)
+      func(props.field, props.formModel[props.field.options.name], event)
     } catch (e) {
       console.error(e)
     }
@@ -69,7 +56,7 @@ function handleBlur(event: any) {
   if (props.field.options.onBlur) {
     try {
       const func = new Function('field', 'value', event, props.field.options.onBlur)
-      func(props.field, value.value, event)
+      func(props.field, props.formModel[props.field.options.name], event)
     } catch (e) {
       console.error(e)
     }
