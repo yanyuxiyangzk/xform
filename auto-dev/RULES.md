@@ -40,8 +40,35 @@
   - `[chore]` 构建/工具
 - 不提交敏感信息（密码、密钥等）
 - 不提交 IDE 配置文件
+- 不提交 `node_modules/`
 
-### 1.4 分支管理
+### 1.4 【新增】package.json 质量脚本规范
+
+前端/Node.js 项目必须包含以下 npm scripts：
+
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .vue,.ts,.js,.jsx,.tsx --no-fix",
+    "lint:fix": "eslint src --ext .vue,.ts,.js,.jsx,.tsx --fix",
+    "type-check": "vue-tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run"
+  }
+}
+```
+
+**规范说明**：
+- `lint` - 只检查，不修改。用于 Git Hook pre-commit
+- `lint:fix` - 自动修复。用于 CI 或开发者本地手动触发
+- `type-check` - TypeScript 类型检查
+- `test` - 监听模式开发用
+- `test:run` - CI/HOOK 用，只跑一次
+
+### 1.5 分支管理
 - 开发分支：`develop`
 - 发布分支：`master`
 - 功能分支：`feature/xxx`
@@ -268,7 +295,38 @@ logger.warn(`登录失败: ${email}, IP: ${req.ip}`);
 
 ## 六、质量门卫
 
-### 6.1 代码检查清单
+### 6.1 【重要】Lint 与 Lint:Fix 分离原则
+
+**核心规则**：
+| 命令 | 用途 | 使用场景 |
+|------|------|---------|
+| `lint` / `eslint --no-fix` | **检查**，仅报告问题 | **Git Hook (pre-commit)** |
+| `lint:fix` / `eslint --fix` | **修复**，自动修改代码 | **CI流水线** 或 **开发者手动触发** |
+
+**原因**：
+- Git Hook 中运行 `lint:fix` 会自动修改代码，可能产生非预期的变更
+- 自动修改后的代码未经 review 就进入 commit，不符合质量规范
+- CI 中运行 `lint:fix` 可以通过 MR/PR 供人 review
+
+**禁止**：
+```bash
+# ❌ 禁止在 pre-commit hook 中运行 lint:fix
+#!/bin/bash
+npm run lint:fix  # 禁止！会自动修改代码
+```
+
+**正确做法**：
+```bash
+# ✅ pre-commit hook 只检查
+#!/bin/bash
+npm run lint       # 只检查，不修改
+
+# ✅ CI 中可以运行 lint:fix
+#!/bin/bash
+npm run lint:fix   # 修复后通过 MR 供人 review
+```
+
+### 6.2 代码检查清单（后端 Java）
 ```
 提交前必须通过：
 □ mvn compile - 编译检查
@@ -279,7 +337,18 @@ logger.warn(`登录失败: ${email}, IP: ${req.ip}`);
 □ 符合TRAE-RULES命名规范
 ```
 
-### 6.2 单元测试要求
+### 6.3 代码检查清单（前端 Vue/TS/JS）
+```
+提交前必须通过：
+□ npm run lint - ESLint 检查（不自动修复）
+□ npm run type-check - TypeScript 类型检查
+□ npm run test:run - 单元测试
+□ 无硬编码敏感信息
+□ 提交信息格式正确
+□ 符合命名规范
+```
+
+### 6.4 单元测试要求
 ```java
 // 1. 必须测试的方法
 - Service层的所有 public 方法
@@ -297,7 +366,7 @@ public void testGetUserById_Success() {}
 public void testGetUserById_NotFound() {}
 ```
 
-### 6.3 代码审查触发条件
+### 6.5 代码审查触发条件
 | 情况 | 必须审查 |
 |------|----------|
 | 修改核心架构 | ✅ |

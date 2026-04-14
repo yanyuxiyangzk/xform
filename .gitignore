@@ -32,6 +32,9 @@ coverage/
 *.bak
 .cache/
 
+# Claude Code auto-dev (禁止提交)
+auto-dev/
+
 # Python (auto-dev builds)
 __pycache__/
 *.pyc

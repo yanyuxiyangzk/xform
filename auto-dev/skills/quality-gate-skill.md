@@ -100,12 +100,96 @@ hardcoded-secret:
 
 ---
 
+### 【新增】4. 前端质量检查 (Frontend Quality)
+
+> 支持 Vue/React/TypeScript/JavaScript 项目
+
+#### 4.1 Lint 检查 (ESLint)
+
+**目的**: 确保代码符合项目代码规范
+
+**命令**:
+```bash
+npm run lint    # 用于 Git Hook - 只检查，不修改
+```
+
+**通过标准**: ESLint 返回码为 0（无报错）
+
+**失败处理**:
+- `block_on_fail: true` → 阻止提交
+- `lint:fix` 不应在 pre-commit 中运行，只在 CI 或手动触发
+
+**⚠️ 重要**: Git Hook pre-commit 中必须使用 `lint`（只检查），禁止使用 `lint:fix`（自动修复）
+
+---
+
+#### 4.2 TypeScript 类型检查
+
+**目的**: 确保 TypeScript 类型正确
+
+**命令**:
+```bash
+npm run type-check    # vue-tsc --noEmit
+```
+
+**通过标准**: vue-tsc 返回码为 0
+
+**失败处理**:
+- `block_on_fail: true` → 阻止提交
+- `block_on_fail: false` → 仅警告
+
+**超时**: 默认 300 秒
+
+---
+
+#### 4.3 前端测试检查
+
+**目的**: 确保前端单元测试通过
+
+**命令**:
+```bash
+npm run test:run    # 用于 CI/HOOK
+npm run test         # 用于开发时监听模式
+```
+
+**通过标准**:
+- 所有测试通过（返回码 0）
+- 覆盖率 >= 配置阈值（默认 70%）
+
+**失败处理**:
+- 测试失败 → 阻止提交
+- 覆盖率不足 → 仅警告
+
+**超时**: 默认 600 秒
+
+---
+
+#### 4.4 构建检查
+
+**目的**: 确保项目能够成功构建
+
+**命令**:
+```bash
+npm run build
+```
+
+**通过标准**: vite build / webpack build 返回码为 0
+
+**失败处理**:
+- `block_on_fail: true` → 阻止提交
+
+**超时**: 默认 300 秒
+
+---
+
 ## 配置示例
 
 在项目根目录的 `.auto-dev.yaml` 中配置：
 
 ```yaml
-# 质量门禁配置
+# =============================================
+# 后端项目 (Java/Maven)
+# =============================================
 gate:
   # 阻塞规则 - 满足任意一项即阻止通过
   block_on:
@@ -120,7 +204,7 @@ gate:
     checkstyle_fail: true  # 代码格式问题 → 警告
     p1_security: true     # P1级别安全问题 → 警告
 
-# 测试配置
+# 后端测试配置
 test:
   command: "mvn test"
   coverage_threshold: 70
@@ -143,6 +227,49 @@ security:
       severity: "P0"
       message: "发现硬编码密钥，禁止提交"
 
+# =============================================
+# 前端项目 (Vue/React/TypeScript) 【新增】
+# =============================================
+frontend_gate:
+  # 阻塞规则
+  block_on:
+    lint_fail: true        # ESLint 检查失败 → 阻止
+    type_check_fail: true  # TypeScript 类型错误 → 阻止
+    test_fail: true        # 测试失败 → 阻止
+    build_fail: true       # 构建失败 → 阻止
+    p0_security: true     # P0安全问题 → 阻止
+
+  # 警告规则
+  warn_on:
+    coverage_low: true     # 覆盖率不足 → 警告
+    lint_warnings: true    # ESLint 警告 → 警告
+
+# 前端 lint 配置
+lint:
+  # pre-commit hook 中只检查，不修复
+  check_command: "npm run lint"
+  # CI 和手动触发时可以修复
+  fix_command: "npm run lint:fix"
+  # ⚠️ 禁止在 hook 中使用 fix_command
+
+# 前端 TypeScript 检查
+type_check:
+  command: "npm run type-check"
+  tool: "vue-tsc"  # 或 "tsc"
+  timeout: 300
+
+# 前端测试配置
+test:
+  run_command: "npm run test:run"   # CI/HOOK 用
+  watch_command: "npm run test"      # 开发用
+  coverage_threshold: 70
+  timeout: 600
+
+# 前端构建配置
+build:
+  command: "npm run build"
+  timeout: 300
+
 # Git Hooks 配置
 git_hooks:
   auto_install: true
@@ -163,10 +290,10 @@ git_hooks:
 # 执行完整质量门禁
 python auto-dev/scripts/quality_gate.py
 
-# 仅编译检查
+# 仅编译检查（后端）
 python auto-dev/scripts/quality_gate.py --compile-only
 
-# 仅测试检查
+# 仅测试检查（后端）
 python auto-dev/scripts/quality_gate.py --test-only
 
 # 跳过安全扫描
@@ -179,16 +306,47 @@ python auto-dev/scripts/quality_gate.py --verbose
 python auto-dev/scripts/quality_gate.py --json report.json
 ```
 
+### 前端项目手动执行 【新增】
+
+```bash
+# 执行前端完整质量门禁
+python auto-dev/scripts/quality_gate.py --frontend
+
+# 仅 ESLint 检查（不修复）
+npm run lint
+
+# 仅 TypeScript 类型检查
+npm run type-check
+
+# 仅前端测试（CI/HOOK用）
+npm run test:run
+
+# 仅构建检查
+npm run build
+
+# 手动修复 ESLint 问题（修复后需要 review）
+npm run lint:fix
+
+# 完整前端质量检查（用于 CI）
+npm run lint && npm run type-check && npm run test:run && npm run build
+```
+
 ### Git Hook 自动执行
 
 安装钩子后，每次 `git commit` 自动执行：
 
 ```bash
-# 安装 Git Hooks
+# 安装 Git Hooks（自动检测项目类型）
 python auto-dev/scripts/install_hooks.py install
 
 # 查看钩子状态
 python auto-dev/scripts/install_hooks.py list
+
+# 前端项目：安装前端专用钩子（lint + type-check + test:run）
+python auto-dev/scripts/install_hooks.py install --frontend
+
+# 后端项目：安装后端专用钩子（mvn compile + mvn test）
+python auto-dev/scripts/install_hooks.py install --backend
 ```
 
 ---
@@ -241,6 +399,59 @@ python auto-dev/scripts/install_hooks.py list
 
 ✗ 编译失败，阻止提交
 ✗ 测试失败，阻止提交
+
+请修复上述问题后重试
+```
+
+### 前端质量门禁通过（示例）【新增】
+
+```
+=== 前端质量门禁 (Frontend Quality Gate) ===
+
+[1/5] ESLint 检查...
+      ✓ 通过 (5.2s)
+
+[2/5] TypeScript 类型检查...
+      ✓ 通过 (12.8s)
+
+[3/5] 单元测试...
+      ✓ 通过 (18.3s)
+
+[4/5] 构建检查...
+      ✓ 通过 (45.1s)
+
+[5/5] 禁止操作检查...
+      ✓ 通过
+
+========================================
+质量门禁检查完成: 5/5 项通过
+========================================
+
+✓ 质量门禁通过，可以提交
+```
+
+### 前端质量门禁失败（示例）【新增】
+
+```
+=== 前端质量门禁 (Frontend Quality Gate) ===
+
+[1/5] ESLint 检查...
+      ✗ 失败
+      Error: src/components/User.vue [Line 15] 'any' type forbidden
+
+[2/5] TypeScript 类型检查...
+      ✗ 失败
+      Error: src/api/user.ts [Line 23] Argument of type 'string | true' is not assignable
+
+[3/5] 单元测试...
+      ✓ 通过 (18.3s)
+
+========================================
+质量门禁检查失败
+========================================
+
+✗ ESLint 检查失败，阻止提交
+✗ TypeScript 类型检查失败，阻止提交
 
 请修复上述问题后重试
 ```

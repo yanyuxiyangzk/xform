@@ -47,6 +47,61 @@ class HookConfig:
             self.checks = []
 
 
+class TechDetector:
+    """项目技术栈检测器（简化版，用于钩子安装）"""
+
+    FRONTEND_FILES = ["package.json"]
+    BACKEND_FILES = ["pom.xml", "build.gradle", "build.gradle.kts"]
+
+    def __init__(self, project_root: str = "."):
+        self.project_root = Path(project_root).resolve()
+
+    def detect(self) -> str:
+        """检测项目类型，返回 'frontend' 或 'backend'"""
+        # 优先检测前端
+        package_json = self.project_root / "package.json"
+        if package_json.exists():
+            try:
+                import json
+
+                with open(package_json, "r", encoding="utf-8") as f:
+                    pkg = json.load(f)
+                    deps = {**pkg.get("dependencies", {}), **pkg.get("devDependencies", {})}
+                    pkg_names = list(deps.keys())
+
+                    # Vue 相关
+                    if any("vue" in p.lower() for p in pkg_names):
+                        return "frontend"
+                    # React 相关
+                    if any("react" in p.lower() for p in pkg_names):
+                        return "frontend"
+                    # 有 package.json 但没有特定框架，可能是前端或后端 Node
+                    # 检查是否有 vite.config 或明确的 Vue/React 依赖
+                    if any(
+                        (self.project_root / f).exists()
+                        for f in ["vite.config.ts", "vite.config.js", "next.config.js"]
+                    ):
+                        return "frontend"
+                    # 纯 Node 后端（有 express/koa/nest 但没有前端框架）
+                    backend_pkgs = ["express", "koa", "nest", "fastify", "hapi"]
+                    if any(pkg.lower() in deps for pkg in backend_pkgs):
+                        return "backend"
+                    # 默认当作前端（因为前端项目通常有更多静态资源）
+                    return "frontend"
+            except Exception:
+                pass
+
+        # 检测后端 Java
+        if (self.project_root / "pom.xml").exists():
+            return "backend"
+        if (self.project_root / "build.gradle").exists() or (
+            self.project_root / "build.gradle.kts"
+        ).exists():
+            return "backend"
+
+        return "unknown"
+
+
 class ConfigLoader:
     """加载 .auto-dev.yaml 配置文件"""
 
@@ -352,13 +407,18 @@ main "$@"
 class GitHooksManager:
     """Git钩子管理器"""
 
-    def __init__(self, project_root: str = ".", force: bool = False):
+    def __init__(self, project_root: str = ".", force: bool = False, project_type: str = None):
         self.installer = HookInstaller(project_root, force)
         self.config_loader = ConfigLoader(project_root)
+        self.tech_detector = TechDetector(project_root)
+        self.project_type = project_type or self.tech_detector.detect()
 
     def install_all(self) -> bool:
         """安装所有配置的钩子"""
         print(color_text("\n=== 安装 Auto-Dev Git Hooks ===", Colors.COLD + Colors.BOLD))
+
+        # 显示检测到的项目类型
+        print(color_text(f"  检测到项目类型: {self.project_type}", Colors.CYAN))
 
         if not self.config_loader.auto_install:
             print(color_text("  [SKIP] 自动安装已被禁用 (git_hooks.auto_install=false)", Colors.YELLOW))
@@ -441,10 +501,27 @@ def main():
         default='all',
         help='指定要操作的钩子类型'
     )
+    parser.add_argument(
+        '--type',
+        choices=['frontend', 'backend', 'auto'],
+        default='auto',
+        help='指定项目类型 (默认: auto 自动检测)'
+    )
+    parser.add_argument(
+        '--detect-only',
+        action='store_true',
+        help='仅检测项目类型，不安装钩子'
+    )
 
     args = parser.parse_args()
 
-    manager = GitHooksManager(args.project_root, args.force)
+    manager = GitHooksManager(args.project_root, args.force, args.type if args.type != 'auto' else None)
+
+    if args.detect_only:
+        detector = TechDetector(args.project_root)
+        project_type = detector.detect()
+        print(f"检测到的项目类型: {project_type}")
+        sys.exit(0)
 
     if args.action == 'install':
         if args.hook == 'all':

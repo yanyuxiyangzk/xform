@@ -1,0 +1,5 @@
+# Force LF line endings for these files
+* text=auto eol=lf
+
+# Keep certain files as-is
+*.bat text eol=crlf

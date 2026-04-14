@@ -1,33 +1,115 @@
 # Auto-Dev 配置文件
 # 零代码平台项目配置
 
-compile:
-  # Maven 多模块子模块目录
-  maven_module: ruoyi-nocode
-  # 编译超时时间（秒）
-  timeout: 300
-  # 编译命令
-  command: mvn compile
+# =============================================
+# 后端配置 (Java/Maven)
+# =============================================
+backend:
+  compile:
+    # Maven 多模块子模块目录
+    maven_module: ruoyi-nocode
+    # 编译超时时间（秒）
+    timeout: 300
+    # 编译命令
+    command: mvn compile
 
-test:
-  # Maven 多模块子模块目录
-  maven_module: ruoyi-nocode
-  # 测试超时时间（秒）
-  timeout: 600
-  # 最低通过率
-  min_pass_rate: 0.9
+  test:
+    # Maven 多模块子模块目录
+    maven_module: ruoyi-nocode
+    # 测试超时时间（秒）
+    timeout: 600
+    # 最低通过率
+    min_pass_rate: 0.9
 
-security:
-  # 安全扫描工具
-  tools:
-    - name: dependency-analyze
-      command: mvn dependency:analyze
-      on_fail: warn
-    - name: spotbugs
-      command: mvn spotbugs:check
-      on_fail: warn
+  security:
+    # 安全扫描工具
+    tools:
+      - name: dependency-analyze
+        command: mvn dependency:analyze
+        on_fail: warn
+      - name: spotbugs
+        command: mvn spotbugs:check
+        on_fail: warn
 
-code_style:
-  # 代码风格检查
-  check_command: mvn checkstyle:check
-  block_on_fail: false
+  code_style:
+    # 代码风格检查
+    check_command: mvn checkstyle:check
+    block_on_fail: false
+
+# =============================================
+# 前端配置 (Vue/React/TypeScript) 【新增】
+# =============================================
+frontend:
+  # 阻塞规则 - 满足任意一项即阻止通过
+  block_on:
+    lint_fail: true        # ESLint 检查失败 → 阻止
+    type_check_fail: true  # TypeScript 类型错误 → 阻止
+    test_fail: true        # 测试失败 → 阻止
+    build_fail: true       # 构建失败 → 阻止
+
+  # 警告规则 - 满足任意一项仅警告
+  warn_on:
+    coverage_low: true     # 覆盖率低于阈值 → 警告
+    lint_warnings: true    # ESLint 警告 → 警告
+
+  # Lint 配置 【重要】
+  lint:
+    # Git Hook pre-commit 中只检查，不修复
+    check_command: "npm run lint"
+    # CI 和手动触发时可以修复
+    fix_command: "npm run lint:fix"
+    # ⚠️ 禁止在 hook 中使用 fix_command
+
+  # TypeScript 检查
+  type_check:
+    command: "npm run type-check"
+    tool: "vue-tsc"
+    timeout: 300
+
+  # 测试配置
+  test:
+    run_command: "npm run test:run"   # CI/HOOK 用
+    watch_command: "npm run test"       # 开发用
+    coverage_threshold: 70
+    timeout: 600
+
+  # 构建配置
+  build:
+    command: "npm run build"
+    timeout: 300
+
+  # 必需的文件
+  required_files:
+    - ".eslintrc.js"
+    - ".prettierrc"
+    - ".editorconfig"
+    - "vitest.config.ts"
+    - ".gitattributes"
+
+  # 必需的 npm scripts
+  required_scripts:
+    - "lint"
+    - "lint:fix"
+    - "type-check"
+    - "test"
+    - "test:run"
+    - "build"
+
+# =============================================
+# 通用配置
+# =============================================
+git_hooks:
+  auto_install: true
+  pre_commit:
+    # 自动检测项目类型选择正确的检查命令
+    auto_detect: true
+    checks:
+      - "quality_gate"
+      - "forbidden_check"
+    block_on_fail: true
+
+# CI 配置 - 用于 GitHub Actions
+ci:
+  # 自动生成 CI 模板
+  generate_on_init: true
+  templates_dir: "auto-dev/templates"
